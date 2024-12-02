@@ -1,15 +1,99 @@
+import erros.IdInvalidoExcaption;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class AdminEstoque {
     private ArrayList<Produto> estoque = new ArrayList<>();
 
     public ArrayList<Produto> getEstoque() {
         return estoque;
+    }
+
+    public void criarProdutoAlimento(int dia, int mes, int ano, String nome, double preco) {
+        Date validade = new Date(dia, mes, ano);
+        ProdutoAlimento p = new ProdutoAlimento(validade, (short) estoque.size(), nome, preco);
+        adicionarProduto(p);
+    }
+
+    public void criarProdutoEvento(int dia, int mes, int ano, String nome, double preco, String premio) {
+        Date diaDoEvento = new Date(dia, mes, ano);
+        ProdutoEvento p = new ProdutoEvento((short) estoque.size(), nome, preco, diaDoEvento, premio);
+        adicionarProduto(p);
+    }
+
+    public void criarProdutoNaoAlimento(String nome, double preco) {
+        ProdutosNaoAlimento p = new ProdutosNaoAlimento((short) estoque.size(), nome, preco);
+        adicionarProduto(p);
+    }
+    public void criarProduto(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Quanto o tipo de produto que voce quer criar: [1] Alimento [2] Evento [3] Nao Alimento");
+
+        int escolha = input.nextInt();
+
+
+        switch(escolha){
+            case 1:
+                System.out.println("Qual o dia da validade?");
+                int diaAlimento = input.nextInt();
+                System.out.println("Qual o mes da validade?");
+                int mesAlimento = input.nextInt();
+                System.out.println("Qual o ano da validade?");
+                int anoAlimento = input.nextInt();
+                input.nextLine();
+
+                System.out.println("Qual o nome do produto?");
+                String nomeAlimento = input.nextLine();
+
+                System.out.println("Qual o preco do produto?");
+                double precoAlimento = input.nextDouble();
+
+                criarProdutoAlimento(diaAlimento, mesAlimento, anoAlimento, nomeAlimento, precoAlimento);
+                break;
+
+            case 2: // Produto Evento
+                System.out.println("Qual o dia do evento?");
+                int diaEvento = input.nextInt();
+                System.out.println("Qual o mes do evento?");
+                int mesEvento = input.nextInt();
+                System.out.println("Qual o ano do evento?");
+                int anoEvento = input.nextInt();
+                input.nextLine(); // Consumir o \n
+
+                System.out.println("Qual o nome do evento?");
+                String nomeEvento = input.nextLine();
+
+                System.out.println("Qual o preco do evento?");
+                double precoEvento = input.nextDouble();
+
+                input.nextLine(); // Consumir o \n
+
+                System.out.println("Qual o premio do evento?");
+                String premio = input.nextLine();
+
+                criarProdutoEvento(diaEvento, mesEvento, anoEvento, nomeEvento, precoEvento, premio);
+                break;
+
+            case 3: // Produto Não Alimento
+                System.out.println("Qual o nome do produto?");
+                String nomeNaoAlimento = input.nextLine();
+
+                System.out.println("Qual o preco do produto?");
+                double precoNaoAlimento = input.nextDouble();
+
+                criarProdutoNaoAlimento(nomeNaoAlimento, precoNaoAlimento);
+                break;
+
+            default:
+                System.out.println("Opção inválida.");
+                break;
+        }
     }
 
     public void adicionarProduto(Produto produto) {
@@ -21,11 +105,20 @@ public class AdminEstoque {
     }
 
     public Produto getProduto(short id) {
-        for (Produto produto : estoque) {
-            if (produto.getId() == id) {
-                return produto;
+        try{
+            if (id < estoque.size()) {
+                for (Produto produto : estoque) {
+                    if (produto.getId() == id) {
+                        return produto;
+                    }
+                }
+            }else {
+                throw new IdInvalidoExcaption("Id nao encontrado");
             }
+        }catch (Exception e){
+            System.out.println("Erro ao procurar produto com o id forcenicdo: " + e.getMessage());
         }
+
         return null;
     }
 

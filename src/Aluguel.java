@@ -1,3 +1,5 @@
+import cliente.Usuario;
+
 import java.util.Date;
 
 public class Aluguel {

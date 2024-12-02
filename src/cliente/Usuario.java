@@ -1,3 +1,5 @@
+package cliente;
+
 public abstract class Usuario {
     protected String nome;
     protected String email;

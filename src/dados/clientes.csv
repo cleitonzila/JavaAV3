@@ -1,0 +1,3 @@
+cliente.UsuarioNormal{0.0, Maria, maria@email.com, Rua real nome real numero real, 555-555-2321, 052.423.412-42, 0}
+cliente.UsuarioPlano{1, 25 11 2024 , Maria, maria@email.com, Rua real nome real numero real, 555-555-2321, 052.423.412-42, 1}
+cliente.UsuarioNormal{0.0, Paulo, paulo@gmail.com, rua do paulo, 93203129, 04523401233, 2}

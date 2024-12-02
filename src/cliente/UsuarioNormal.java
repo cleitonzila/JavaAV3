@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+package cliente;
 
 public class UsuarioNormal extends Usuario{
     private double divida;
@@ -20,7 +18,7 @@ public class UsuarioNormal extends Usuario{
 
     @Override
     public String toString() {
-        return "UsuarioNormal{" +
+        return "cliente.UsuarioNormal{" +
                 divida +
                 ", " + super.toString();
     }

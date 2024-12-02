@@ -1,3 +1,8 @@
+import cliente.AdminClientes;
+import cliente.Usuario;
+import cliente.UsuarioNormal;
+import cliente.UsuarioPlano;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;

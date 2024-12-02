@@ -1,3 +1,5 @@
+package cliente;
+
 import java.util.Date;
 
 public class UsuarioPlano extends Usuario implements Planos{
@@ -24,10 +26,12 @@ public class UsuarioPlano extends Usuario implements Planos{
 
     @Override
     public String toString() {
-        return "UsuarioPlano{" +
+        return "cliente.UsuarioPlano{" +
                 tipoPlano +
                 ", " +
-                validadePlano +
+                validadePlano.getDate() + " " +
+                (validadePlano.getMonth() + 1) + " " +
+                (validadePlano.getYear() + 1900) + " " +
                 ", " + super.toString();
     }
 }
