@@ -1,3 +1,5 @@
+package produtos;
+
 public class ProdutosNaoAlimento extends Produto {
 
     public ProdutosNaoAlimento(short id, String nome, double preco) {
@@ -6,6 +8,6 @@ public class ProdutosNaoAlimento extends Produto {
 
     @Override
     public String toString() {
-        return "ProdutosNaoAlimento{" + super.toString();
+        return "produtos.ProdutosNaoAlimento{" + super.toString();
     }
 }

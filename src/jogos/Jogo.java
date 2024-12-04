@@ -1,3 +1,5 @@
+package jogos;
+
 public abstract class Jogo {
     protected String nome;
     protected int id;
@@ -45,7 +47,7 @@ public abstract class Jogo {
 
     @Override
     public String toString() {
-        return "Jogo{" +
+        return "jogos.Jogo{" +
                 "nome='" + nome + '\'' +
                 ", id=" + id +
                 ", tempo=" + tempo +

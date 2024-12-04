@@ -1,3 +1,5 @@
+package produtos;
+
 public abstract class Produto {
     private short id;
     private String nome;

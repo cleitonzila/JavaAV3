@@ -1,3 +1,5 @@
+package produtos;
+
 import cliente.Usuario;
 
 import java.util.Date;
@@ -18,7 +20,7 @@ public class ProdutoEvento extends Produto implements Evento {
 
     @Override
     public String toString() {
-        return "ProdutoEvento{" +
+        return "produtos.ProdutoEvento{" +
                 diaDoEvento + ", " +
                 '\'' + premio + '\'' +
                 ", " + super.toString();

@@ -1,3 +1,5 @@
+package jogos;
+
 public class JogoAluguel extends Jogo {
     private byte tipo;
     private boolean alugado;

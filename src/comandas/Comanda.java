@@ -1,3 +1,7 @@
+package comandas;
+
+import produtos.Produto;
+
 import java.util.ArrayList;
 
 public class Comanda {

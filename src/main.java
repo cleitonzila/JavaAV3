@@ -1,5 +1,8 @@
 import cliente.AdminClientes;
+import comandas.AdminComandas;
 import erros.OpcaoInvalidaException;
+import jogos.Acervo;
+import produtos.AdminEstoque;
 
 import java.util.Scanner;
 

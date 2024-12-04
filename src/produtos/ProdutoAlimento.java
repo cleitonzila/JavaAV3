@@ -1,3 +1,5 @@
+package produtos;
+
 import java.util.Date;
 
 public class ProdutoAlimento extends Produto implements ProdutoPerecivel{
@@ -15,7 +17,7 @@ public class ProdutoAlimento extends Produto implements ProdutoPerecivel{
 
     @Override
     public String toString() {
-        return "ProdutoAlimento{" +
+        return "produtos.ProdutoAlimento{" +
                 validade +
                 ", " + super.toString();
     }

@@ -1,3 +1,5 @@
+package jogos;
+
 public class JogoCativo extends Jogo {
     private boolean jogando;
 

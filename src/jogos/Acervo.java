@@ -1,3 +1,5 @@
+package jogos;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +70,7 @@ public class Acervo {
                 byte tipo = Byte.parseByte(dados[4]);
                 byte numeroJogadores = Byte.parseByte(dados[5]);
 
-                // Criar instância de JogoAluguel e adicionar ao mapa
+                // Criar instância de jogos.JogoAluguel e adicionar ao mapa
                 JogoAluguel jogo = new JogoAluguel(nome, id, tempo, numeroJogadores, tipo, alugado);
                 adicionarJogo(jogo);
             }

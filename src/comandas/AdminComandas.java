@@ -1,3 +1,8 @@
+package comandas;
+
+import produtos.AdminEstoque;
+import produtos.Produto;
+
 import java.io.*;
 import java.util.ArrayList;
 

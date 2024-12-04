@@ -1,7 +1,11 @@
+package aluguel;
+
 import cliente.AdminClientes;
 import cliente.Usuario;
 import cliente.UsuarioNormal;
 import cliente.UsuarioPlano;
+import jogos.Acervo;
+import jogos.JogoAluguel;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -53,10 +57,10 @@ public class AdminAluguel {
                     System.out.printf("Pague a multa de R$%.2f, por causa de um atraso na entrega de %d dias",(double)(diffInDays - 7)*10, (diffInDays-7));
                 }
                 aluguel.setConcluido(true);
-                System.out.printf("Aluguel concluido, muito obrigado %s", aluguel.getUsuarioAluguel().getNome());
+                System.out.printf("aluguel.Aluguel concluido, muito obrigado %s", aluguel.getUsuarioAluguel().getNome());
             } else if (aluguel.getUsuarioAluguel() instanceof UsuarioPlano && !aluguel.isConcluido()){
                 aluguel.setConcluido(true);
-                System.out.printf("Aluguel concluido, muito obrigado %s", aluguel.getUsuarioAluguel().getNome());
+                System.out.printf("aluguel.Aluguel concluido, muito obrigado %s", aluguel.getUsuarioAluguel().getNome());
             } else if (aluguel.isConcluido()) {
                 System.out.printf("A devolução do jogo %s ja foi concluido", aluguel.getUsuarioAluguel().getNome());
             }

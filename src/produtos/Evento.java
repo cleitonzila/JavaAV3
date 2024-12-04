@@ -1,3 +1,5 @@
+package produtos;
+
 import cliente.Usuario;
 
 public interface Evento {

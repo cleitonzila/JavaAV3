@@ -1,3 +1,6 @@
+package produtos;
+
+import erros.CampoVazioException;
 import erros.IdInvalidoExcaption;
 
 import java.io.*;
@@ -34,65 +37,67 @@ public class AdminEstoque {
     public void criarProduto(){
         Scanner input = new Scanner(System.in);
         System.out.println("Quanto o tipo de produto que voce quer criar: [1] Alimento [2] Evento [3] Nao Alimento");
+        try{
+            int escolha = input.nextInt();
+            switch(escolha){
+                case 1:
+                    System.out.println("Qual o dia da validade?");
+                    int diaAlimento = input.nextInt();
+                    System.out.println("Qual o mes da validade?");
+                    int mesAlimento = input.nextInt();
+                    System.out.println("Qual o ano da validade?");
+                    int anoAlimento = input.nextInt();
 
-        int escolha = input.nextInt();
+                    System.out.println("Qual o nome do produto?");
+                    String nomeAlimento = input.next();
+
+                    System.out.println("Qual o preco do produto?");
+                    double precoAlimento = input.nextDouble();
+
+                    if(nomeAlimento.isEmpty()){
+                        throw new CampoVazioException("Porfavor prencha todos os campos");
+                    }
+                    criarProdutoAlimento(diaAlimento, mesAlimento, anoAlimento, nomeAlimento, precoAlimento);
+                    break;
+
+                case 2: // produtos.Produto produtos.Evento
+                    System.out.println("Qual o dia do evento?");
+                    int diaEvento = input.nextInt();
+                    System.out.println("Qual o mes do evento?");
+                    int mesEvento = input.nextInt();
+                    System.out.println("Qual o ano do evento?");
+                    int anoEvento = input.nextInt();
+
+                    System.out.println("Qual o nome do evento?");
+                    String nomeEvento = input.nextLine();
+
+                    System.out.println("Qual o preco do evento?");
+                    double precoEvento = input.nextDouble();
 
 
-        switch(escolha){
-            case 1:
-                System.out.println("Qual o dia da validade?");
-                int diaAlimento = input.nextInt();
-                System.out.println("Qual o mes da validade?");
-                int mesAlimento = input.nextInt();
-                System.out.println("Qual o ano da validade?");
-                int anoAlimento = input.nextInt();
-                input.nextLine();
+                    System.out.println("Qual o premio do evento?");
+                    String premio = input.nextLine();
 
-                System.out.println("Qual o nome do produto?");
-                String nomeAlimento = input.nextLine();
+                    criarProdutoEvento(diaEvento, mesEvento, anoEvento, nomeEvento, precoEvento, premio);
+                    break;
 
-                System.out.println("Qual o preco do produto?");
-                double precoAlimento = input.nextDouble();
+                case 3: // produtos.Produto Não Alimento
+                    System.out.println("Qual o nome do produto?");
+                    String nomeNaoAlimento = input.next();
 
-                criarProdutoAlimento(diaAlimento, mesAlimento, anoAlimento, nomeAlimento, precoAlimento);
-                break;
+                    System.out.println("Qual o preco do produto?");
+                    double precoNaoAlimento = input.nextDouble();
 
-            case 2: // Produto Evento
-                System.out.println("Qual o dia do evento?");
-                int diaEvento = input.nextInt();
-                System.out.println("Qual o mes do evento?");
-                int mesEvento = input.nextInt();
-                System.out.println("Qual o ano do evento?");
-                int anoEvento = input.nextInt();
-                input.nextLine(); // Consumir o \n
+                    criarProdutoNaoAlimento(nomeNaoAlimento, precoNaoAlimento);
+                    break;
 
-                System.out.println("Qual o nome do evento?");
-                String nomeEvento = input.nextLine();
+                default:
+                    System.out.println("Opção inválida.");
+                    break;
+            }
 
-                System.out.println("Qual o preco do evento?");
-                double precoEvento = input.nextDouble();
-
-                input.nextLine(); // Consumir o \n
-
-                System.out.println("Qual o premio do evento?");
-                String premio = input.nextLine();
-
-                criarProdutoEvento(diaEvento, mesEvento, anoEvento, nomeEvento, precoEvento, premio);
-                break;
-
-            case 3: // Produto Não Alimento
-                System.out.println("Qual o nome do produto?");
-                String nomeNaoAlimento = input.nextLine();
-
-                System.out.println("Qual o preco do produto?");
-                double precoNaoAlimento = input.nextDouble();
-
-                criarProdutoNaoAlimento(nomeNaoAlimento, precoNaoAlimento);
-                break;
-
-            default:
-                System.out.println("Opção inválida.");
-                break;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -130,7 +135,7 @@ public class AdminEstoque {
             String linha;
 
             while ((linha = br.readLine()) != null) {
-                if (linha.startsWith("ProdutoAlimento")) {
+                if (linha.startsWith("produtos.ProdutoAlimento")) {
                     String conteudo = linha.substring(linha.indexOf("{") + 1, linha.indexOf("}"));
                     String[] partes = conteudo.split(", ");
 
@@ -140,7 +145,7 @@ public class AdminEstoque {
                     double preco = Double.parseDouble(partes[3]);
                     ProdutoAlimento produtoAlimento = new ProdutoAlimento(validade, id, nome, preco);
                     produtosCarregados.add(produtoAlimento);
-                } else if (linha.startsWith("ProdutoEvento")) {
+                } else if (linha.startsWith("produtos.ProdutoEvento")) {
                     String conteudo = linha.substring(linha.indexOf("{") + 1, linha.indexOf("}"));
                     String[] partes = conteudo.split(", ");
 
@@ -151,7 +156,7 @@ public class AdminEstoque {
                     double preco = Double.parseDouble(partes[4]);
                     ProdutoEvento produtoEvento = new ProdutoEvento(id, nome, preco, diaDoEvento, premio);
                     produtosCarregados.add(produtoEvento);
-                } else if (linha.startsWith("ProdutosNaoAlimento")) {
+                } else if (linha.startsWith("produtos.ProdutosNaoAlimento")) {
                     String conteudo = linha.substring(linha.indexOf("{") + 1, linha.indexOf("}"));
                     String[] partes = conteudo.split(", ");
 

@@ -1,4 +1,7 @@
+package aluguel;
+
 import cliente.Usuario;
+import jogos.JogoAluguel;
 
 import java.util.Date;
 
@@ -59,7 +62,7 @@ public class Aluguel {
 
     @Override
     public String toString() {
-        return "Aluguel{" +
+        return "aluguel.Aluguel{" +
                 jogoAluguel.getId() +
                 ", " + dataAluguel +
                 ", " + usuarioAluguel.getId() +
