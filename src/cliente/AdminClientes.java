@@ -172,4 +172,11 @@ public class AdminClientes {
 
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "AdminClientes{" +
+                "listaClientes=" + listaClientes +
+                '}';
+    }
 }

@@ -1,6 +1,7 @@
 package produtos;
 
 import erros.CampoVazioException;
+import erros.DataPassadaException;
 import erros.IdInvalidoExcaption;
 
 import java.io.*;
@@ -19,21 +20,51 @@ public class AdminEstoque {
     }
 
     public void criarProdutoAlimento(int dia, int mes, int ano, String nome, double preco) {
-        Date validade = new Date(dia, mes, ano);
-        ProdutoAlimento p = new ProdutoAlimento(validade, (short) estoque.size(), nome, preco);
-        adicionarProduto(p);
+        try {
+            Date validade = new Date(ano - 1900, mes - 1, dia);
+
+            if (validade.before(new Date())) {
+                throw new DataPassadaException("A validade não pode ser uma data no passado.");
+            }
+
+            short novoId = (short) (estoque.size() + 1);
+
+            ProdutoAlimento p = new ProdutoAlimento(validade, novoId, nome, preco);
+
+            adicionarProduto(p);
+
+            System.out.println("Produto criado com sucesso: " + p);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao criar produto: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro inesperado: " + e.getMessage());
+        }
     }
 
     public void criarProdutoEvento(int dia, int mes, int ano, String nome, double preco, String premio) {
-        Date diaDoEvento = new Date(dia, mes, ano);
-        ProdutoEvento p = new ProdutoEvento((short) estoque.size(), nome, preco, diaDoEvento, premio);
-        adicionarProduto(p);
+        try{
+            Date diaDoEvento = new Date(ano - 1900, mes - 1, dia);
+
+            if (diaDoEvento.before(new Date())){
+                throw new DataPassadaException("O dia do evento nao pode ser um data passada");
+            }
+            ProdutoEvento p = new ProdutoEvento((short) estoque.size(), nome, preco, diaDoEvento, premio);
+
+            adicionarProduto(p);
+            System.out.println("Produto criado com sucesso: " + p);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao criar produto: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro inesperado: " + e.getMessage());
+        }
     }
 
     public void criarProdutoNaoAlimento(String nome, double preco) {
         ProdutosNaoAlimento p = new ProdutosNaoAlimento((short) estoque.size(), nome, preco);
         adicionarProduto(p);
     }
+
     public void criarProduto(){
         Scanner input = new Scanner(System.in);
         System.out.println("Quanto o tipo de produto que voce quer criar: [1] Alimento [2] Evento [3] Nao Alimento");
@@ -190,5 +221,10 @@ public class AdminEstoque {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "AdminEstoque{" +
+                "estoque=" + estoque +
+                '}';
+    }
 }

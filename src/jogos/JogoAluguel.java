@@ -32,4 +32,12 @@ public class JogoAluguel extends Jogo {
     public void devolver(){
         alugado = false;
     }
+
+    @Override
+    public String toString() {
+        return "JogoAluguel{" +
+                "tipo=" + tipo +
+                ", alugado=" + alugado +
+                "} " + super.toString();
+    }
 }

@@ -23,4 +23,11 @@ public class JogoCativo extends Jogo {
     public void retornar(){
         jogando = false;
     }
+
+    @Override
+    public String toString() {
+        return "JogoCativo{" +
+                "jogando=" + jogando +
+                "} " + super.toString();
+    }
 }

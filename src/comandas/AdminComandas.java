@@ -11,12 +11,47 @@ public class AdminComandas {
     AdminEstoque adminEstoque = new AdminEstoque();
 
     public AdminComandas() {
+        adminEstoque.carregarProdutosDoArquivo("src/dados/estoque.csv");
         comandas = new ArrayList<>();
     }
 
     public ArrayList<Comanda> getComandas() {
         return comandas;
 
+    }
+    public void ativarComanda(byte id) {
+        for (Comanda comanda : comandas) {
+            if (comanda.getId() == id) {
+                comanda.setAtiva(true);
+            }
+        }
+    }
+
+    public void desativarComanda(byte id) {
+        for (Comanda comanda : comandas) {
+            if (comanda.getId() == id) {
+                comanda.setAtiva(false);
+            }
+        }
+    }
+
+    public void adicionarProduto(byte id, short produtoId) {
+        for (Comanda comanda : comandas) {
+            if (comanda.getId() == id) {
+                comanda.adicionarProduto(adminEstoque.getProduto(produtoId));
+            }
+        }
+
+    }
+    public ArrayList<Produto> getProdutos(byte id) {
+        ArrayList<Produto> tmp = new ArrayList<>();
+        for (Comanda comanda : comandas) {
+            if (comanda.getId() == id) {
+                tmp.addAll(comanda.getProdutos());
+            }
+
+        }
+        return tmp;
     }
 
     public void setComandas(ArrayList<Comanda> comandas) {
@@ -96,5 +131,13 @@ public class AdminComandas {
             }
         }
         return tmp;
+    }
+
+    @Override
+    public String toString() {
+        return "AdminComandas{" +
+                "comandas=" + comandas +
+                ", adminEstoque=" + adminEstoque +
+                '}';
     }
 }

@@ -1,8 +1,12 @@
 package jogos;
 
+import erros.CampoVazioException;
+
 import java.io.*;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Acervo {
     private Map<Integer, Jogo> jogos;
@@ -13,6 +17,7 @@ public class Acervo {
 
     public void adicionarJogo(Jogo jogo) {
         jogos.put(jogo.getId(), jogo);
+        salvarJogosNoArquivo("src/dados/jogos.csv");
     }
 
     public void removerJogo(int id) {
@@ -27,17 +32,106 @@ public class Acervo {
         this.jogos = jogos;
     }
 
-    public void jogosAlugaveis() {
-        for (Jogo jogo : jogos.values()) {
-            if (jogo instanceof JogoAluguel) {
-                if (((JogoAluguel) jogo).isAlugado()) {
-                    System.out.printf("JOGO: %s ID: %s: DISPONIVEL %n", jogo.getNome(), jogo.getId());
-                } else {
-                    System.out.printf("JOGO: %s ID: %s: INDISPONIVEL %n", jogo.getNome(), jogo.getId());
-                }
+    public void adicionarJogoCativo() {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            System.out.print("Digite o nome do jogo: ");
+            String nome = scanner.nextLine();
+            if (nome.trim().isEmpty()) {
+                throw new CampoVazioException("O campo 'nome' não pode estar vazio.");
             }
+
+            System.out.print("Digite o tempo estimado do jogo (short): ");
+            String tempoInput = scanner.nextLine();
+            if (tempoInput.trim().isEmpty()) {
+                throw new CampoVazioException("O campo 'tempo' não pode estar vazio.");
+            }
+            short tempo = Short.parseShort(tempoInput);
+
+            System.out.print("Digite o número de jogadores (byte): ");
+            String numeroJogadoresInput = scanner.nextLine();
+            if (numeroJogadoresInput.trim().isEmpty()) {
+                throw new CampoVazioException("O campo 'número de jogadores' não pode estar vazio.");
+            }
+            byte numeroJogadores = Byte.parseByte(numeroJogadoresInput);
+
+            int novoId = jogos.size() + 1;
+
+            JogoCativo jogoCativo = new JogoCativo(
+                    nome,
+                    novoId,
+                    tempo,
+                    numeroJogadores
+            );
+
+            jogos.put(novoId, jogoCativo);
+
+            System.out.println("Jogo cativo adicionado com sucesso: " + jogoCativo);
+        } catch (CampoVazioException e) {
+            System.out.println("Erro: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Entrada inválida. Certifique-se de inserir valores numéricos corretos.");
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
         }
     }
+
+
+    public void adicionarJogoAlugavel() {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            System.out.print("Digite o tipo do jogo (byte): ");
+            String tipoInput = scanner.nextLine();
+            if (tipoInput.trim().isEmpty()) {
+                throw new CampoVazioException("O campo 'tipo' não pode estar vazio.");
+            }
+            byte tipo = Byte.parseByte(tipoInput);
+
+            System.out.print("Digite o nome do jogo: ");
+            String nome = scanner.nextLine();
+            if (nome.trim().isEmpty()) {
+                throw new CampoVazioException("O campo 'nome' não pode estar vazio.");
+            }
+
+            System.out.print("Digite o tempo estimado do jogo (short): ");
+            String tempoInput = scanner.nextLine();
+            if (tempoInput.trim().isEmpty()) {
+                throw new CampoVazioException("O campo 'tempo' não pode estar vazio.");
+            }
+            short tempo = Short.parseShort(tempoInput);
+
+            System.out.print("Digite o número de jogadores (byte): ");
+            String numeroJogadoresInput = scanner.nextLine();
+            if (numeroJogadoresInput.trim().isEmpty()) {
+                throw new CampoVazioException("O campo 'número de jogadores' não pode estar vazio.");
+            }
+            byte numeroJogadores = Byte.parseByte(numeroJogadoresInput);
+
+            int novoId = jogos.size() + 1;
+
+            JogoAluguel jogoAluguel = new JogoAluguel(
+                    nome,
+                    novoId,
+                    tempo,
+                    numeroJogadores,
+                    tipo,
+                    false
+            );
+
+            jogos.put(novoId, jogoAluguel);
+
+            System.out.println("Jogo adicionado com sucesso: " + jogoAluguel);
+        } catch (CampoVazioException e) {
+            System.out.println("Erro: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Entrada inválida. Certifique-se de inserir valores numéricos corretos.");
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+        }
+    }
+
 
     public void jogosDisponiveis() {
         for (Jogo jogo : jogos.values()) {
@@ -110,4 +204,10 @@ public class Acervo {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Acervo{" +
+                "jogos=" + jogos +
+                '}';
+    }
 }

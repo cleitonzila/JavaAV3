@@ -57,4 +57,12 @@ public class Comanda {
         this.ativa = false;
     }
 
+    @Override
+    public String toString() {
+        return "Comanda{" +
+                "produtos=" + produtos +
+                ", id=" + id +
+                ", ativa=" + ativa +
+                '}';
+    }
 }

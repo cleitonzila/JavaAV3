@@ -5,6 +5,7 @@ import cliente.Usuario;
 import cliente.UsuarioNormal;
 import cliente.UsuarioPlano;
 import jogos.Acervo;
+import jogos.Jogo;
 import jogos.JogoAluguel;
 
 import java.io.*;
@@ -13,40 +14,81 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class AdminAluguel {
-    private ArrayList<Aluguel> alugueis = new ArrayList<Aluguel>();
+    private ArrayList<Aluguel> alugueis = new ArrayList<>();
     private AdminClientes clientes = new AdminClientes();
     private Acervo acervo = new Acervo();
+
+    public AdminAluguel() {
+        this.acervo.carregarJogosDoArquivo("src/dados/jogos.csv");
+        this.clientes.carregarClientesDoArquivo("src/dados/clientes.csv");
+    }
+
+    public void alugarJogoById(int jogoId, int clienteId){
+        Usuario usuario = null;
+        Jogo jogoAluguel = null;
+
+        for(Usuario cliente: clientes.getListaClientes()){
+            if(cliente.getId() == clienteId){
+                usuario = cliente;
+                break;
+            }
+        }
+
+        for(Map.Entry<Integer, Jogo> entry : acervo.getJogos().entrySet()){
+            if(entry.getKey() == jogoId){
+                jogoAluguel = entry.getValue();
+                break;
+            }
+        }
+
+        if(usuario != null && jogoAluguel != null){
+            alugarJogo((JogoAluguel) jogoAluguel, usuario);
+        } else {
+            if(usuario == null) {
+                System.out.println("Usuário não encontrado.");
+            }
+            if(jogoAluguel == null) {
+                System.out.println("Jogo não encontrado.");
+            }
+        }
+    }
 
     public void alugarJogo(JogoAluguel jogo, Usuario usuario) {
         Date hoje = new Date();
         Aluguel aluguel = new Aluguel(jogo, hoje, usuario, alugueis.size()+1, false);
         if(usuario instanceof UsuarioNormal){
             if(((UsuarioNormal) usuario).getDivida()==0){
-                System.out.printf("O valor do seu aluguel é de R$%.2f", jogo.getTipo()*10.0);
+                System.out.printf("O valor do seu aluguel é de R$%.2f\n", 10.0);
                 alugueis.add(aluguel);
 
             }else{
-                System.out.println("Pague sua divida antes de alugar um jogo caloteiro");
+                System.out.println("Pague sua divida antes de alugar um jogo caloteiro\n");
             }
         }
         if(usuario instanceof UsuarioPlano){
-            byte counter = 0;
-            for (Aluguel aluguel1 : alugueis) {
-                if(aluguel1.getUsuarioAluguel().equals(usuario) && !aluguel1.isConcluido()){
-                    counter++;
-                }
-            }
-            if(counter>=((UsuarioPlano) usuario).getTipoPlano()){
-                System.out.print("Devolva pelo menos um jogo para poder alugar um novo jogo /n");
-            }else {
-                alugueis.add(aluguel);
-            }
+            alugueis.add(aluguel);
         }
     }
 
+    public void devolverById(int aluguelId) {
+        Aluguel aluguelDevolver = null;
+        for (Aluguel aluguel : alugueis) {
+            if (aluguel.getId() == aluguelId) {
+                aluguelDevolver = aluguel;
+                break;
+            }
+        }
+
+        if (aluguelDevolver != null) {
+            devolver(aluguelDevolver);
+        } else {
+            System.out.println("Aluguel com ID " + aluguelId + " não encontrado.\n");
+        }
+    }
     public void devolver(Aluguel aluguelDoCliente) {
         Date hoje = new Date();
         for(Aluguel aluguel : alugueis){
@@ -57,16 +99,14 @@ public class AdminAluguel {
                     System.out.printf("Pague a multa de R$%.2f, por causa de um atraso na entrega de %d dias",(double)(diffInDays - 7)*10, (diffInDays-7));
                 }
                 aluguel.setConcluido(true);
-                System.out.printf("aluguel.Aluguel concluido, muito obrigado %s", aluguel.getUsuarioAluguel().getNome());
+                System.out.printf("aluguel.Aluguel concluido, muito obrigado %s\n", aluguel.getUsuarioAluguel().getNome());
             } else if (aluguel.getUsuarioAluguel() instanceof UsuarioPlano && !aluguel.isConcluido()){
                 aluguel.setConcluido(true);
-                System.out.printf("aluguel.Aluguel concluido, muito obrigado %s", aluguel.getUsuarioAluguel().getNome());
+                System.out.printf("aluguel.Aluguel concluido, muito obrigado %s\n", aluguel.getUsuarioAluguel().getNome());
             } else if (aluguel.isConcluido()) {
-                System.out.printf("A devolução do jogo %s ja foi concluido", aluguel.getUsuarioAluguel().getNome());
+                System.out.printf("A devolução do jogo %s ja foi concluido\n", aluguel.getUsuarioAluguel().getNome());
             }
         }
-        //TODO colocar erro caso o aluguel nao exista na lista de alugueis
-
     }
 
     public void atualizarDivida(Usuario usuario) {
@@ -129,7 +169,7 @@ public class AdminAluguel {
 
             }
 
-            System.out.println("Produtos carregados com sucesso!");
+            System.out.println("Alugeis carregados com sucesso!");
         } catch (IOException | ParseException e) {
             System.err.println("Erro ao carregar o arquivo de produtos: " + e.getMessage());
         }

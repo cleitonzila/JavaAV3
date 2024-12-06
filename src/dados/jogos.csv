@@ -2,3 +2,4 @@ id,nome,alugado,tempo,tipo,numeroJogadores
 1,Catan,false,60,2,4
 2,Ticket to Ride,true,20,1,8
 3,Carcassonne,false,120,3,4
+4,Rising Sun,false,180,1,2
